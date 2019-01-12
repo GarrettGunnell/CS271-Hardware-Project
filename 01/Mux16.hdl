@@ -4,8 +4,8 @@
 // File name: projects/01/Mux16.hdl
 
 /**
- * 16-bit multiplexor: 
- * for i = 0..15 out[i] = a[i] if sel == 0 
+ * 16-bit multiplexor:
+ * for i = 0..15 out[i] = a[i] if sel == 0
  *                        b[i] if sel == 1
  */
 
@@ -14,5 +14,68 @@ CHIP Mux16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    Not(in=sel, out=notsel);
+    And(a=a[0], b=notsel, out=a1);
+    And(a=b[0], b=sel, out=a2);
+    Or(a=a1, b=a2, out=out[0]);
+    //
+    And(a=a[1], b=notsel, out=a3);
+    And(a=b[1], b=sel, out=a4);
+    Or(a=a3, b=a4, out=out[1]);
+    //
+    And(a=a[2], b=notsel, out=a5);
+    And(a=b[2], b=sel, out=a6);
+    Or(a=a5, b=a6, out=out[2]);
+    //
+    And(a=a[3], b=notsel, out=a7);
+    And(a=b[3], b=sel, out=a8);
+    Or(a=a7, b=a8, out=out[3]);
+    //
+    And(a=a[4], b=notsel, out=a9);
+    And(a=b[4], b=sel, out=a10);
+    Or(a=a9, b=a10, out=out[4]);
+    //
+    And(a=a[5], b=notsel, out=a11);
+    And(a=b[5], b=sel, out=a12);
+    Or(a=a11, b=a12, out=out[5]);
+    //
+    And(a=a[6], b=notsel, out=a13);
+    And(a=b[6], b=sel, out=a14);
+    Or(a=a13, b=a14, out=out[6]);
+    //
+    And(a=a[7], b=notsel, out=a15);
+    And(a=b[7], b=sel, out=a16);
+    Or(a=a15, b=a16, out=out[7]);
+    //
+    And(a=a[8], b=notsel, out=a17);
+    And(a=b[8], b=sel, out=a18);
+    Or(a=a17, b=a18, out=out[8]);
+    //
+    And(a=a[9], b=notsel, out=a19);
+    And(a=b[9], b=sel, out=a20);
+    Or(a=a19, b=a20, out=out[9]);
+    //
+    And(a=a[10], b=notsel, out=a21);
+    And(a=b[10], b=sel, out=a22);
+    Or(a=a21, b=a22, out=out[10]);
+    //
+    And(a=a[11], b=notsel, out=a23);
+    And(a=b[11], b=sel, out=a24);
+    Or(a=a23, b=a24, out=out[11]);
+    //
+    And(a=a[12], b=notsel, out=a25);
+    And(a=b[12], b=sel, out=a26);
+    Or(a=a25, b=a26, out=out[12]);
+    //
+    And(a=a[13], b=notsel, out=a27);
+    And(a=b[13], b=sel, out=a28);
+    Or(a=a27, b=a28, out=out[13]);
+    //
+    And(a=a[14], b=notsel, out=a29);
+    And(a=b[14], b=sel, out=a30);
+    Or(a=a29, b=a30, out=out[14]);
+    //
+    And(a=a[15], b=notsel, out=a31);
+    And(a=b[15], b=sel, out=a32);
+    Or(a=a31, b=a32, out=out[15]);
 }
