@@ -7,7 +7,7 @@
  * The ALU (Arithmetic Logic Unit).
  * Computes one of the following functions:
  * x+y, x-y, y-x, 0, 1, -1, x, y, -x, -y, !x, !y,
- * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs, 
+ * x+1, y+1, x-1, y-1, x&y, x|y on two 16-bit inputs,
  * according to 6 input bits denoted zx,nx,zy,ny,f,no.
  * In addition, the ALU computes two 1-bit outputs:
  * if the ALU output == 0, zr is set to 1; otherwise zr is set to 0;
@@ -27,8 +27,8 @@
 // if (out < 0) set ng = 1
 
 CHIP ALU {
-    IN  
-        x[16], y[16],  // 16-bit inputs        
+    IN
+        x[16], y[16],  // 16-bit inputs
         zx, // zero the x input?
         nx, // negate the x input?
         zy, // zero the y input?
@@ -36,11 +36,29 @@ CHIP ALU {
         f,  // compute out = x + y (if 1) or x & y (if 0)
         no; // negate the out output?
 
-    OUT 
+    OUT
         out[16], // 16-bit output
         zr, // 1 if (out == 0), 0 otherwise
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    Mux16(a=x, b=false, sel=zx, out=muxZX);
+    Not16(in=muxZX, out=notmuxZX);
+    Mux16(a=muxZX, b=notmuxZX, sel=nx, out=muxNX);
+    //
+    Mux16(a=y, b=false, sel=zy, out=muxZY);
+    Not16(in=muxZY, out=notmuxZY);
+    Mux16(a=muxZY, b=notmuxZY, sel=ny, out=muxNY);
+    //
+    And16(a=muxNX, b=muxNY, out=andXY);
+    Add16(a=muxNX, b=muxNY, out=addXY);
+    //
+    Mux16(a=andXY, b=addXY, sel=f, out[0..14]=muxOUT1, out[15]=muxOUT2);
+    Not16(in[0..14]=muxOUT1, in[15]=muxOUT2, out=notmuxOUT);
+    Mux16(a[0..14]=muxOUT1, a[15]=muxOUT2, b=notmuxOUT, sel=no, out[0]=out0, out[1]=out1, out[2]=out2, out[3]=out3, out[4]=out4, out[5]=out5, out[6]=out6, out[7]=out7, out[8]=out8, out[9]=out9, out[10]=out10, out[11]=out11, out[12]=out12, out[13]=out13, out[14]=out14, out[15]=out15, out=out, out[15]=ng);
+    //
+    Or8Way(in[0]=out0, in[1]=out1, in[2]=out2, in[3]=out3, in[4]=out4, in[5]=out5, in[6]=out6, in[7]=out7, out=orOUT1);
+    Or8Way(in[0]=out8, in[1]=out9, in[2]=out10, in[3]=out11, in[4]=out12, in[5]=out13, in[6]=out14, in[7]=out15, out=orOUT2);
+    Or(a=orOUT1, b=orOUT2, out=orOUT3);
+    Not(in=orOUT3, out=zr);
 }
