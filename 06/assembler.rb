@@ -1,18 +1,8 @@
-load "parser.rb"
-load "symbol_table.rb"
+load "assembler_files/parser.rb"
+load "assembler_files/symbol_table.rb"
+load "assembler_files/misc_files.rb"
 
-print "What .asm file would you like to convert? (Please provide the path) "
-input_file = gets.chomp
-
-if File.exists?(input_file)
-  unless File.extname(input_file) == ".asm"
-    print "Your file is not an asm file\n"
-    exit
-  end
-else
-  print "I did not find the file.\n"
-  exit
-end
+input_file = take_input()
 
 parser = Parser.new(input_file)
 writer = File.open("assemble.hack", "w")
