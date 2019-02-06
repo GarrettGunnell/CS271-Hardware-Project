@@ -2,7 +2,7 @@ class Parser
   @@file = nil
 
   def initialize(file)
-    @@file = File.open(file)
+    @@file = File.open(file, "r")
   end
 
   def file()
