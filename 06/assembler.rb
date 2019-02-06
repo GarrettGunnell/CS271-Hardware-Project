@@ -10,6 +10,7 @@ class Parser
   end
 
   def command_type(line)
+    line = line.strip
     if line[0] != '@'
       return 'C'
     else
@@ -22,6 +23,10 @@ class Parser
 
   def dest(line)
     dest = line.split('=')[0]
+    begin
+      dest = dest.strip
+    rescue
+    end
     if dest == 'M'
       return '001'
     elsif dest == 'D'
@@ -94,11 +99,11 @@ class Parser
     elsif comp == 'D-A'
       return '0010011'
     elsif comp == 'D-M'
-      return '010011'
+      return '1010011'
     elsif comp == 'A-D'
-      return '000111'
+      return '0000111'
     elsif comp == 'M-D'
-      return '000111'
+      return '1000111'
     elsif comp == 'D&A'
       return '0000000'
     elsif comp == 'D&M'
@@ -138,6 +143,29 @@ class Parser
   end
 end
 
+class SymbolTable
+  @@symbols = {"SP" => 0, "LCL" => 1, "ARG" => 2, "THIS" => 3, "THAT" => 4, "R0" => 0, "R1" => 1, "R2" => 2, "R3" => 3, "R4" => 4, "R5" => 5, "R6" => 6, "R7" => 7, "R8" => 8,
+   "R9" => 9, "R10" => 10, "R11" => 11, "R12" => 12, "R13" => 13, "R14" => 14, "R15" => 15, "SCREEN" => 16384, "KBD" => 24576}
+  @@address = 16
+
+  def add_entry(symbol)
+    symbol = symbol.strip
+    @@symbols[symbol] = @@address
+    @@address += 1
+  end
+
+  def contains(symbol)
+    symbol = symbol.strip
+    return @@symbols.has_key?(symbol)
+  end
+
+  def get_address(symbol)
+    symbol = symbol.strip
+    return @@symbols[symbol]
+  end
+end
+
+
 print "What .asm file would you like to convert? (Please provide the path) "
 input_file = gets.chomp
 
@@ -152,6 +180,8 @@ else
 end
 
 parser = Parser.new(input_file)
+File.open("assemble.hack", "w")
+symbols = SymbolTable.new
 
 parser.file.each do |line|
   skip_line = false
@@ -167,9 +197,25 @@ parser.file.each do |line|
     new_line += x
   end
   next if skip_line || new_line.strip.empty?
-  puts new_line
-  if new_line.include? ";"
-    jump = true
+  if parser.command_type(new_line) == 'C'
+    if new_line.include? ";"
+      jump = true
+    end
+    puts '111' + parser.comp(new_line, jump) + parser.dest(new_line) + parser.jump(new_line)
+  else
+    variable = new_line.strip
+    if variable.split('@')[1].to_i.to_s == variable.split('@')[1]
+      constant = variable.split('@')[1].to_i
+      constant = constant.to_s(2).rjust(16, '0')
+      puts constant
+    else
+      puts variable.split('@')[1]
+      if symbols.contains(variable.split('@')[1])
+        puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+      else
+        symbols.add_entry(variable.split('@')[1])
+        puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+      end
+    end
   end
-  puts '111' + parser.comp(new_line, jump) + parser.dest(new_line) + parser.jump(new_line)
 end
