@@ -40,6 +40,73 @@ class Parser
       return '000'
     end
   end
+
+  def comp(line)
+    comp = String.try_convert(line.split('=')[1])
+    begin
+      comp = comp.strip
+    rescue
+    end
+    if comp == '0'
+      return '0101010'
+    elsif comp == '1'
+      return '0111111'
+    elsif comp == '-1'
+      return '0111010'
+    elsif comp == 'D'
+      return '0001100'
+    elsif comp == 'A'
+      return '0110000'
+    elsif comp == 'M'
+      return '1110000'
+    elsif comp == '!D'
+      return '0001101'
+    elsif comp == '!A'
+      return '0110001'
+    elsif comp == '!M'
+      return '1110001'
+    elsif comp == '-D'
+      return '0001111'
+    elsif comp == '-A'
+      return '0110011'
+    elsif comp == '-M'
+      return '1110011'
+    elsif comp == 'D+1'
+      return '0011111'
+    elsif comp == 'A+1'
+      return '0110111'
+    elsif comp == 'M+1'
+      return '1110111'
+    elsif comp == 'D-1'
+      return '0001110'
+    elsif comp == 'A-1'
+      return '0110010'
+    elsif comp == 'M-1'
+      return '1110010'
+    elsif comp == 'D+A'
+      return '0000010'
+    elsif comp == 'D+M'
+      return '1000010'
+    elsif comp == 'D-A'
+      return '0010011'
+    elsif comp == 'D-M'
+      return '010011'
+    elsif comp == 'A-D'
+      return '000111'
+    elsif comp == 'M-D'
+      return '000111'
+    elsif comp == 'D&A'
+      return '0000000'
+    elsif comp == 'D&M'
+      return '1000000'
+    elsif comp == 'D|A'
+      return '0010101'
+    elsif comp == 'D|M'
+      return '1010101'
+    else
+      return '0000000'
+    end
+  end
 end
 
 print "What .asm file would you like to convert? (Please provide the path) "
@@ -71,6 +138,7 @@ parser.file.each do |line|
     new_line += x
   end
   next if skip_line || new_line.strip.empty?
-  puts parser.dest(line)
+  puts new_line
+  puts parser.comp(new_line) + parser.dest(new_line)
   # puts new_line
 end
