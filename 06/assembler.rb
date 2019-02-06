@@ -41,8 +41,12 @@ class Parser
     end
   end
 
-  def comp(line)
-    comp = String.try_convert(line.split('=')[1])
+  def comp(line, jump)
+    unless jump
+      comp = String.try_convert(line.split('=')[1])
+    else
+      comp = String.try_convert(line.split(';')[0])
+    end
     begin
       comp = comp.strip
     rescue
@@ -107,6 +111,31 @@ class Parser
       return '0000000'
     end
   end
+
+  def jump(line)
+    jump = String.try_convert(line.split(';')[1])
+    begin
+      jump = jump.strip
+    rescue
+    end
+    if jump == 'JGT'
+      return '001'
+    elsif jump == 'JEQ'
+      return '010'
+    elsif jump == 'JGE'
+      return '011'
+    elsif jump == 'JLT'
+      return '100'
+    elsif jump == 'JNE'
+      return '101'
+    elsif jump == 'JLE'
+      return '110'
+    elsif jump == 'JMP'
+      return '111'
+    else
+      return '000'
+    end
+  end
 end
 
 print "What .asm file would you like to convert? (Please provide the path) "
@@ -127,7 +156,7 @@ parser = Parser.new(input_file)
 parser.file.each do |line|
   skip_line = false
   new_line = ''
-  dest = '('
+  jump = false
   line.split(//).each do |x|
     if x == '('
       skip_line = true
@@ -139,6 +168,8 @@ parser.file.each do |line|
   end
   next if skip_line || new_line.strip.empty?
   puts new_line
-  puts parser.comp(new_line) + parser.dest(new_line)
-  # puts new_line
+  if new_line.include? ";"
+    jump = true
+  end
+  puts '111' + parser.comp(new_line, jump) + parser.dest(new_line) + parser.jump(new_line)
 end
