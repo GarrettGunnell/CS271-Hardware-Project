@@ -148,10 +148,12 @@ class SymbolTable
    "R9" => 9, "R10" => 10, "R11" => 11, "R12" => 12, "R13" => 13, "R14" => 14, "R15" => 15, "SCREEN" => 16384, "KBD" => 24576}
   @@address = 16
 
-  def add_entry(symbol)
+  def add_entry(symbol, address=@@address)
     symbol = symbol.strip
-    @@symbols[symbol] = @@address
-    @@address += 1
+    @@symbols[symbol] = address
+    if address == @@address
+      @@address += 1
+    end
   end
 
   def contains(symbol)
@@ -180,9 +182,13 @@ else
 end
 
 parser = Parser.new(input_file)
-File.open("assemble.hack", "w")
+writer = File.open("assemble.hack", "w")
 symbols = SymbolTable.new
+runs = 0
+first_run = true
+current_line = 0
 
+while runs < 2
 parser.file.each do |line|
   skip_line = false
   new_line = ''
@@ -190,6 +196,9 @@ parser.file.each do |line|
   line.split(//).each do |x|
     if x == '('
       skip_line = true
+      if runs == 0
+        symbols.add_entry(line.gsub(/[()]/, ""), (current_line))
+      end
       break
     elsif x == "/"
       break
@@ -197,25 +206,30 @@ parser.file.each do |line|
     new_line += x
   end
   next if skip_line || new_line.strip.empty?
-  if parser.command_type(new_line) == 'C'
-    if new_line.include? ";"
-      jump = true
-    end
-    puts '111' + parser.comp(new_line, jump) + parser.dest(new_line) + parser.jump(new_line)
-  else
-    variable = new_line.strip
-    if variable.split('@')[1].to_i.to_s == variable.split('@')[1]
-      constant = variable.split('@')[1].to_i
-      constant = constant.to_s(2).rjust(16, '0')
-      puts constant
+  if runs == 1
+    if parser.command_type(new_line) == 'C'
+      if new_line.include? ";"
+        jump = true
+      end
+      writer.puts 111.to_s + parser.comp(new_line, jump) + parser.dest(new_line) + parser.jump(new_line)
     else
-      puts variable.split('@')[1]
-      if symbols.contains(variable.split('@')[1])
-        puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+      variable = new_line.strip
+      if variable.split('@')[1].to_i.to_s == variable.split('@')[1]
+        constant = variable.split('@')[1].to_i
+        constant = constant.to_s(2).rjust(16, '0')
+        writer.puts constant
       else
-        symbols.add_entry(variable.split('@')[1])
-        puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+        if symbols.contains(variable.split('@')[1])
+          writer.puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+        else
+          symbols.add_entry(variable.split('@')[1])
+          writer.puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+        end
       end
     end
   end
+  current_line += 1
+end
+runs += 1
+parser = Parser.new(input_file)
 end
