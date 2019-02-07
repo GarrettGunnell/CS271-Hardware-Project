@@ -21,7 +21,7 @@ class Code
         @@file.puts constant
       else
         if symbol_table.contains(variable.split('@')[1])
-          @@file.puts symbols.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
+          @@file.puts symbol_table.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
         else
           symbol_table.add_entry(variable.split('@')[1])
           @@file.puts symbol_table.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
