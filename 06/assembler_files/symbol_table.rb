@@ -16,11 +16,11 @@ class SymbolTable
 
   def contains(symbol)
     symbol = symbol.strip
-    return @@SYMBOLS.has_key?(symbol)
+    @@SYMBOLS.has_key?(symbol)
   end
 
   def get_address(symbol)
     symbol = symbol.strip
-    return @@SYMBOLS[symbol]
+    @@SYMBOLS[symbol]
   end
 end

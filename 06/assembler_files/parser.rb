@@ -14,9 +14,9 @@ class Parser
   def command_type(line)
     line = line.strip
     if line[0] != '@'
-      return 'C'
+      'C'
     else
-      return 'A'
+      'A'
     end
   end
 

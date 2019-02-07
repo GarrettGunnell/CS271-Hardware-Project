@@ -7,7 +7,7 @@ def take_input()
       print "Your file is not an asm file\n"
       exit
     end
-    return input_file
+    input_file
   else
     print "I did not find the file.\n"
     exit
