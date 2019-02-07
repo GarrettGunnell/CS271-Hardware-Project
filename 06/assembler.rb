@@ -7,7 +7,6 @@ input_file = take_input()
 code = Code.new(input_file.split('.')[0] + '.hack')
 symbols = SymbolTable.new()
 runs = 0
-first_run = true
 current_line = 0
 
 while runs < 2

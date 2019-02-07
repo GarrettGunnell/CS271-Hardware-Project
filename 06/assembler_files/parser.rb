@@ -1,12 +1,14 @@
 class Parser
-  @@file = nil
+  @@COMP = {'0' => '0101010', '1' => '0111111', '-1' => '0111010', 'D' => '0001100', 'A' => '0110000', 'M' => '1110000', '!D' => '0001101', '!A' => '0110001', '!M' => '1110001', '-D' => '0001111', '-A' => '0110011', '-M' => '1110011', 'D+1' => '0011111', 'A+1' => '0110111', 'M+1' => '1110111', 'D-1' => '0001110', 'A-1' => '0110010', 'M-1' => '1110010', 'D+A' => '0000010', 'D+M' => '1000010', 'D-A' => '0010011', 'D-M' => '1010011', 'A-D' => '0000111', 'M-D' => '1000111', 'D&A' => '0000000', 'D&M' => '1000000', 'D|A' => '0010101', 'D|M' => '1010101'}
+  @@DEST = {'M' => '001', 'D' => '010', 'MD' => '011', 'A' => '100', 'AM' => '101', 'AD' => '110', 'AMD' => '111'}
+  @@JUMP = {'JGT' => '001', 'JEQ' => '010', 'JGE' => '011', 'JLT' => '100', 'JNE' => '101', 'JLE' => '110', 'JMP' => '111'}
 
   def initialize(file)
-    @@file = File.open(file, "r")
+    @file = File.open(file, "r")
   end
 
   def file()
-    return @@file
+    @file
   end
 
   def command_type(line)
@@ -18,31 +20,16 @@ class Parser
     end
   end
 
-  def symbol(line)
-  end
-
   def dest(line)
     dest = line.split('=')[0]
     begin
       dest = dest.strip
     rescue
     end
-    if dest == 'M'
-      return '001'
-    elsif dest == 'D'
-      return '010'
-    elsif dest == 'MD'
-      return '011'
-    elsif dest == 'A'
-      return '100'
-    elsif dest == 'AM'
-      return '101'
-    elsif dest == 'AD'
-      return '110'
-    elsif dest == 'AMD'
-      return '111'
+    if @@DEST.has_key?(dest)
+      @@DEST[dest]
     else
-      return '000'
+      '000'
     end
   end
 
@@ -56,64 +43,10 @@ class Parser
       comp = comp.strip
     rescue
     end
-    if comp == '0'
-      return '0101010'
-    elsif comp == '1'
-      return '0111111'
-    elsif comp == '-1'
-      return '0111010'
-    elsif comp == 'D'
-      return '0001100'
-    elsif comp == 'A'
-      return '0110000'
-    elsif comp == 'M'
-      return '1110000'
-    elsif comp == '!D'
-      return '0001101'
-    elsif comp == '!A'
-      return '0110001'
-    elsif comp == '!M'
-      return '1110001'
-    elsif comp == '-D'
-      return '0001111'
-    elsif comp == '-A'
-      return '0110011'
-    elsif comp == '-M'
-      return '1110011'
-    elsif comp == 'D+1'
-      return '0011111'
-    elsif comp == 'A+1'
-      return '0110111'
-    elsif comp == 'M+1'
-      return '1110111'
-    elsif comp == 'D-1'
-      return '0001110'
-    elsif comp == 'A-1'
-      return '0110010'
-    elsif comp == 'M-1'
-      return '1110010'
-    elsif comp == 'D+A'
-      return '0000010'
-    elsif comp == 'D+M'
-      return '1000010'
-    elsif comp == 'D-A'
-      return '0010011'
-    elsif comp == 'D-M'
-      return '1010011'
-    elsif comp == 'A-D'
-      return '0000111'
-    elsif comp == 'M-D'
-      return '1000111'
-    elsif comp == 'D&A'
-      return '0000000'
-    elsif comp == 'D&M'
-      return '1000000'
-    elsif comp == 'D|A'
-      return '0010101'
-    elsif comp == 'D|M'
-      return '1010101'
+    if @@COMP.has_key?(comp)
+      @@COMP[comp]
     else
-      return '0000000'
+      '0000000'
     end
   end
 
@@ -123,22 +56,10 @@ class Parser
       jump = jump.strip
     rescue
     end
-    if jump == 'JGT'
-      return '001'
-    elsif jump == 'JEQ'
-      return '010'
-    elsif jump == 'JGE'
-      return '011'
-    elsif jump == 'JLT'
-      return '100'
-    elsif jump == 'JNE'
-      return '101'
-    elsif jump == 'JLE'
-      return '110'
-    elsif jump == 'JMP'
-      return '111'
+    if @@JUMP.has_key?(jump)
+      @@JUMP[jump]
     else
-      return '000'
+      '000'
     end
   end
 end
