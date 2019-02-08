@@ -5,10 +5,15 @@ class Parser
 
   def initialize(file)
     @file = File.open(file, "r")
+    @parsed_file = []
   end
 
   def file()
     @file
+  end
+
+  def parsed_file()
+    @parsed_file
   end
 
   def command_type(line)
@@ -60,6 +65,28 @@ class Parser
       @@JUMP[jump]
     else
       '000'
+    end
+  end
+
+  def read_file(symbols)
+    current_line = 0
+    @file.each do |line|
+      skip_line = false
+      new_line = ''
+      jump = false
+      line.split(//).each do |x|
+        if x == '('
+          skip_line = true
+          symbols.add_entry(line.gsub(/[()]/, ""), current_line)
+          break
+        elsif x == "/"
+          break
+        end
+        new_line += x
+      end
+      next if skip_line || new_line.strip.empty?
+      @parsed_file.push(new_line)
+      current_line += 1
     end
   end
 end
