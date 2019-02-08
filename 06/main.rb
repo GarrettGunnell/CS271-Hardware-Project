@@ -1,3 +1,9 @@
+load "assembler_files/parser.rb"
+load "assembler_files/symbol_table.rb"
+load "assembler_files/misc_functions.rb"
+load "assembler_files/code.rb"
+load "assembler_files/assembler.rb"
+
 def take_input()
   print "What .asm file would you like to convert? (Please provide the path) "
   input_file = gets.chomp
@@ -13,3 +19,11 @@ def take_input()
     exit
   end
 end
+
+
+def main(input_file)
+  assembler = Assembler.new()
+  assembler.assemble(input_file, input_file.split('.')[0] + '.hack')
+end
+
+main(take_input())

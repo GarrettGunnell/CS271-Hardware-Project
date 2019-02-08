@@ -3,13 +3,8 @@ class Parser
   @@DEST = {'M' => '001', 'D' => '010', 'MD' => '011', 'A' => '100', 'AM' => '101', 'AD' => '110', 'AMD' => '111'}
   @@JUMP = {'JGT' => '001', 'JEQ' => '010', 'JGE' => '011', 'JLT' => '100', 'JNE' => '101', 'JLE' => '110', 'JMP' => '111'}
 
-  def initialize(file)
-    @file = File.open(file, "r")
+  def initialize()
     @parsed_file = []
-  end
-
-  def file()
-    @file
   end
 
   def parsed_file()
@@ -68,9 +63,9 @@ class Parser
     end
   end
 
-  def read_file(symbols)
+  def read_file(file, symbols)
     current_line = 0
-    @file.each do |line|
+    file.each do |line|
       skip_line = false
       new_line = ''
       jump = false

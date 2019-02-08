@@ -1,9 +1,5 @@
 class Code
-
-  def initialize(file)
-
-  end
-
+  
   def translate(parser, instruction, line, symbol_table, file)
     if instruction == 'C'
       jump = false
