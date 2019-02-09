@@ -1,7 +1,3 @@
-load "assembler_files/parser.rb"
-load "assembler_files/symbol_table.rb"
-load "assembler_files/misc_functions.rb"
-load "assembler_files/code.rb"
 load "assembler_files/assembler.rb"
 
 def take_input()

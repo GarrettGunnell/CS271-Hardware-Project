@@ -1,5 +1,5 @@
 class Code
-  
+
   def translate(parser, instruction, line, symbol_table, file)
     if instruction == 'C'
       jump = false
@@ -11,9 +11,7 @@ class Code
     else
       variable = line.strip
       if variable.split('@')[1].to_i.to_s == variable.split('@')[1]
-        constant = variable.split('@')[1].to_i
-        constant = constant.to_s(2).rjust(16, '0')
-        file.puts constant
+        file.puts variable.split('@')[1].to_i.to_s(2).rjust(16, '0')
       else
         if symbol_table.contains(variable.split('@')[1])
           file.puts symbol_table.get_address(variable.split('@')[1]).to_s(2).rjust(16, '0')
