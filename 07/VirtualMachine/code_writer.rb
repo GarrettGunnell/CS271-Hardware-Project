@@ -17,19 +17,19 @@ class CodeWriter
   end
 
   def write_arithmetic(command, current_line)
-    if command == 'add'
+    if command == 'add'# X + Y
       @output_file.puts "@SP\n"\
       "AM=M-1\n"\
       "D=M\n"\
       "A=A-1\n"\
       "M=M+D"\
-    elsif command == 'sub'
+    elsif command == 'sub' # X - Y
       @output_file.puts "@SP\n"\
       "AM=M-1\n"\
       "D=M\n"\
       "A=A-1\n"\
       "M=M-D"\
-    elsif @@equalities.has_key?(command)
+    elsif @@equalities.has_key?(command) # Handles X>Y, X<Y, X == Y
       equality = @@equalities[command]
       label1 = "If_True" + @current_labels.to_s
       label2 = "Else" + @current_labels.to_s
@@ -51,7 +51,7 @@ class CodeWriter
       "A=M-1\n"\
       "M=0"
       @current_labels += 1
-    elsif command == 'or' || command == 'and'
+    elsif command == 'or' || command == 'and' # Handles X|Y and X&Y
       if command == 'or'
         operator = 'M|D'
       else
@@ -62,11 +62,11 @@ class CodeWriter
       "D=M\n"\
       "A=A-1\n"\
       "M=#{operator}"
-    elsif command == 'not'
+    elsif command == 'not' #!Y
       @output_file.puts "@SP\n"\
       "AM=M-1\n"\
       "M=!M"\
-    elsif command == 'neg'
+    elsif command == 'neg' #-Y
       @output_file.puts "@SP\n"\
       "AM=M-1\n"\
       "M=-M"\
@@ -151,7 +151,7 @@ class CodeWriter
     @output_file.puts "//#{current_line}"
   end
 
-  def close()
+  def close() # Puts infinite loop at end of asm file 
     @output_file.puts "(END)\n"\
     "@END\n"\
     "0;JMP"

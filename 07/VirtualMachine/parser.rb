@@ -2,14 +2,13 @@ load "VirtualMachine/code_writer.rb"
 
 class Parser
   @@arithmetic = ['add', 'sub', 'neg', 'eq', 'gt', 'lt', 'and', 'or', 'not']
-  @@memory = ['argument', 'local', 'static', 'constant', 'this', 'that', 'pointer', 'temp']
 
   def initialize(stream, output)
     @input_file = File.open(stream, 'r')
     @code_writer = CodeWriter.new(output)
   end
 
-  def command_type(line)
+  def command_type(line) # Returns the type of vm command
     if @@arithmetic.include? "#{line}"
       'C_Arithmetic'
     elsif line == 'pop'
@@ -21,7 +20,7 @@ class Parser
     end
   end
 
-  def arg1(line)
+  def arg1(line) # Returns the first argument of a push/pop command or returns arithmetic command
     command_type = command_type(line[0].strip)
     if command_type == 'C_Arithmetic'
       line[0]
@@ -32,7 +31,7 @@ class Parser
     end
   end
 
-  def arg2(command)
+  def arg2(command) # Returns second argument of push/pop command
     command[2].strip
   end
 
