@@ -9,6 +9,6 @@ unless args_valid?
   abort('Wrong file!')
 end
 
-File.open(ARGV[0], 'r').each do |line|
-  puts line
-end
+parser = Parser.new(ARGV[0])
+
+parser.parse()
