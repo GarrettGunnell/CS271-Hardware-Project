@@ -14,7 +14,7 @@ M=D
 @0
 D=A
 @LCL
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -48,7 +48,7 @@ M=D
 @2
 D=A
 @ARG
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -66,7 +66,7 @@ M=D
 @1
 D=A
 @ARG
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -92,7 +92,7 @@ M=D
 @6
 D=A
 @THIS
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -126,7 +126,7 @@ M=D
 @5
 D=A
 @THAT
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -144,7 +144,7 @@ M=D
 @2
 D=A
 @THAT
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -170,7 +170,7 @@ M=D
 @6
 D=A
 @R5
-A=A+D
+A=M+D
 D=A
 @R14
 M=D
@@ -183,7 +183,7 @@ M=D
 @0
 D=A
 @LCL
-A=D+A
+A=M+D
 D=M
 @SP
 A=M
@@ -194,7 +194,7 @@ M=M+1
 @5
 D=A
 @THAT
-A=D+A
+A=M+D
 D=M
 @SP
 A=M
@@ -211,7 +211,7 @@ M=M+D
 @1
 D=A
 @ARG
-A=D+A
+A=M+D
 D=M
 @SP
 A=M
@@ -228,7 +228,7 @@ M=M-D
 @6
 D=A
 @THIS
-A=D+A
+A=M+D
 D=M
 @SP
 A=M
@@ -239,7 +239,7 @@ M=M+1
 @6
 D=A
 @THIS
-A=D+A
+A=M+D
 D=M
 @SP
 A=M
@@ -262,7 +262,7 @@ M=M-D
 @6
 D=A
 @R5
-A=D+A
+A=M+D
 D=M
 @SP
 A=M

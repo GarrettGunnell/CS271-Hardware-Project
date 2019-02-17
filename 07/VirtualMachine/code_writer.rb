@@ -44,7 +44,7 @@ class CodeWriter
         @output_file.puts "@#{index}\n"\
         "D=A\n"\
         "@#{segment_arg}\n"\
-        "A=D+A\n"\
+        "A=M+D\n"\
         "D=M\n"\
         "@SP\n"\
         "A=M\n"\
@@ -61,7 +61,7 @@ class CodeWriter
       "@#{index}\n"\
       "D=A\n"\
       "@#{segment_arg}\n"\
-      "A=A+D\n"\
+      "A=M+D\n"\
       "D=A\n"\
       "@R14\n"\
       "M=D\n"\
