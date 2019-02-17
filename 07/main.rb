@@ -9,6 +9,6 @@ unless args_valid?
   abort('Wrong file!')
 end
 
-parser = Parser.new(ARGV[0])
+parser = Parser.new(ARGV[0], ARGV[0].split('.')[0] + '.asm')
 
 parser.parse()
