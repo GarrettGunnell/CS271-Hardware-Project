@@ -42,9 +42,9 @@ class Parser
       command = line.split()
       command_type = command_type(command[0].strip)
       if command_type == 'C_Arithmetic'
-        @code_writer.write_arithmetic()
+        @code_writer.write_arithmetic(arg1(command), $.)
       elsif command_type == "C_Pop" || command_type == "C_Push"
-        @code_writer.write_push_pop(command_type, arg1(command), arg2(command))
+        @code_writer.write_push_pop(command_type, arg1(command), arg2(command), $.)
       end
     end
     @code_writer.close()
