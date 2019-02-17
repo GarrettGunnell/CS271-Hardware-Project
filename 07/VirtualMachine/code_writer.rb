@@ -4,7 +4,7 @@ class CodeWriter
                 'this' => 'THIS',
                 'that' => 'THAT',
                 'temp' => 'R5',
-                'static' => '???',
+                'static' => '16',
                 'pointer' => '3'}
 
   def initialize(output_file)
@@ -40,7 +40,7 @@ class CodeWriter
         "M=D\n"\
         "@SP\n"\
         "M=M+1"\
-      elsif segment == 'pointer'
+      elsif segment == 'pointer' || segment == 'static'
         @output_file.puts "@#{index}\n"\
         "D=A\n"\
         "@#{segment_arg}\n"\
@@ -64,7 +64,7 @@ class CodeWriter
         "M=M+1"\
       end
     elsif command_type == 'C_Pop'
-      if segment == 'pointer'
+      if segment == 'pointer' || segment == 'static'
         @output_file.puts "@SP\n"\
         "AM=M-1\n"\
         "D=M\n"\
