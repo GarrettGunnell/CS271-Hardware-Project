@@ -5,7 +5,7 @@ class CodeWriter
                 'that' => 'THAT',
                 'temp' => 'R5',
                 'static' => '???',
-                'pointer' => '???'}
+                'pointer' => '3'}
 
   def initialize(output_file)
     @output_file = File.open(output_file, 'w')
@@ -40,6 +40,17 @@ class CodeWriter
         "M=D\n"\
         "@SP\n"\
         "M=M+1"\
+      elsif segment == 'pointer'
+        @output_file.puts "@#{index}\n"\
+        "D=A\n"\
+        "@#{segment_arg}\n"\
+        "A=A+D\n"\
+        "D=M\n"\
+        "@SP\n"\
+        "A=M\n"\
+        "M=D\n"\
+        "@SP\n"\
+        "M=M+1"\
       else
         @output_file.puts "@#{index}\n"\
         "D=A\n"\
@@ -53,23 +64,43 @@ class CodeWriter
         "M=M+1"\
       end
     elsif command_type == 'C_Pop'
-      @output_file.puts "@SP\n"\
-      "AM=M-1\n"\
-      "D=M\n"\
-      "@R13\n"\
-      "M=D\n"\
-      "@#{index}\n"\
-      "D=A\n"\
-      "@#{segment_arg}\n"\
-      "A=M+D\n"\
-      "D=A\n"\
-      "@R14\n"\
-      "M=D\n"\
-      "@R13\n"\
-      "D=M\n"\
-      "@R14\n"\
-      "A=M\n"\
-      "M=D"\
+      if segment == 'pointer'
+        @output_file.puts "@SP\n"\
+        "AM=M-1\n"\
+        "D=M\n"\
+        "@R13\n"\
+        "M=D\n"\
+        "@#{index}\n"\
+        "D=A\n"\
+        "@#{segment_arg}\n"\
+        "A=A+D\n"\
+        "D=A\n"\
+        "@R14\n"\
+        "M=D\n"\
+        "@R13\n"\
+        "D=M\n"\
+        "@R14\n"\
+        "A=M\n"\
+        "M=D"\
+      else
+        @output_file.puts "@SP\n"\
+        "AM=M-1\n"\
+        "D=M\n"\
+        "@R13\n"\
+        "M=D\n"\
+        "@#{index}\n"\
+        "D=A\n"\
+        "@#{segment_arg}\n"\
+        "A=M+D\n"\
+        "D=A\n"\
+        "@R14\n"\
+        "M=D\n"\
+        "@R13\n"\
+        "D=M\n"\
+        "@R14\n"\
+        "A=M\n"\
+        "M=D"\
+      end
     end
     @output_file.puts "//#{current_line}"
   end
