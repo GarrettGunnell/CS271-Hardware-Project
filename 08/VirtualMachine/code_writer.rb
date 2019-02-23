@@ -155,6 +155,23 @@ class CodeWriter
     @output_file.puts "//#{current_line}"
   end
 
+  def write_label(label_name)
+    @output_file.puts "(#{label_name})"
+  end
+
+  def write_goto(label_name)
+    @output_file.puts "@#{label_name}\n"\
+    "0;JMP"
+  end
+
+  def write_if(label_name)
+    @output_file.puts "@SP\n"\
+    "AM=M-1\n"\
+    "D=M\n"\
+    "@#{label_name}\n"\
+    "D;JGT\n"
+  end
+
   def close() # Puts infinite loop at end of asm file
     @output_file.puts "(END)\n"\
     "@END\n"\

@@ -15,6 +15,12 @@ class Parser
       'C_Pop'
     elsif line == 'push'
       'C_Push'
+    elsif line == 'label'
+      'L_Command'
+    elsif line == 'goto'
+      'GoTo_Command'
+    elsif line == 'if-goto'
+      'If_Command'
     else
       abort('Invalid syntax')
     end
@@ -24,10 +30,8 @@ class Parser
     command_type = command_type(line[0].strip)
     if command_type == 'C_Arithmetic'
       line[0]
-    elsif command_type == "C_Pop" || command_type == "C_Push"
-      line[1]
     else
-      abort ('Yikes!')
+      line[1]
     end
   end
 
@@ -37,13 +41,27 @@ class Parser
 
   def parse()
     @input_file.each do |line|
-      next if line.strip[0] == '/' || line.strip.empty?
-      command = line.split()
+      skip_line = false
+      new_line = ''
+      line.split(//).each do |x|
+        if x == "/" # If comment, stop reading
+          break
+        end
+        new_line += x # Builds a new string that doesn't have any potential in line comments
+      end
+      next if skip_line || new_line.strip.empty?
+      command = new_line.strip.split()
       command_type = command_type(command[0].strip)
       if command_type == 'C_Arithmetic'
         @code_writer.write_arithmetic(arg1(command), $.)
       elsif command_type == "C_Pop" || command_type == "C_Push"
         @code_writer.write_push_pop(command_type, arg1(command), arg2(command), $.)
+      elsif command_type == "L_Command"
+        @code_writer.write_label(arg1(command))
+      elsif command_type == "GoTo_Command"
+        @code_writer.write_goto(arg1(command))
+      elsif command_type == "If_Command"
+        @code_writer.write_if(arg1(command))
       end
     end
     @code_writer.close()
