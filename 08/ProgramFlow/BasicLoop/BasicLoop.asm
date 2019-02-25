@@ -129,7 +129,7 @@ M=M+1
 AM=M-1
 D=M
 @LOOP_START
-D;JGT
+D;JNE
 @0
 D=A
 @LCL

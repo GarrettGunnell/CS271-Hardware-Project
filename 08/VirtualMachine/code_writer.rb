@@ -169,7 +169,15 @@ class CodeWriter
     "AM=M-1\n"\
     "D=M\n"\
     "@#{label_name}\n"\
-    "D;JGT\n"
+    "D;JNE\n"
+  end
+
+  def write_function(function_name, num_locals)
+    
+  end
+
+  def write_call(function_name, num_args)
+
   end
 
   def close() # Puts infinite loop at end of asm file
