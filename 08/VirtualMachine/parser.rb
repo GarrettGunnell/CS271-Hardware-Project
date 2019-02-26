@@ -64,17 +64,17 @@ class Parser
         elsif command_type == "C_Pop" || command_type == "C_Push"
           @code_writer.write_push_pop(command_type, arg1(command), arg2(command), $.)
         elsif command_type == "L_Command"
-          @code_writer.write_label(arg1(command))
+          @code_writer.write_label(arg1(command), $.)
         elsif command_type == "GoTo_Command"
-          @code_writer.write_goto(arg1(command))
+          @code_writer.write_goto(arg1(command), $.)
         elsif command_type == "If_Command"
-          @code_writer.write_if(arg1(command))
+          @code_writer.write_if(arg1(command), $.)
         elsif command_type == "Function_Command"
-          @code_writer.write_function(arg1(command), arg2(command))
+          @code_writer.write_function(arg1(command), arg2(command), $.)
         elsif command_type == "Return"
-          @code_writer.write_return()
+          @code_writer.write_return($.)
         elsif command_type == "Call_Command"
-          @code_writer.write_call(arg1(command), arg2(command))
+          @code_writer.write_call(arg1(command), arg2(command), $.)
         end
       end
     end

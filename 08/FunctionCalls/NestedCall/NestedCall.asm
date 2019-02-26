@@ -1,4 +1,7 @@
+//8
 (Sys.init)
+//
+//9
 @4000
 D=A
 @SP
@@ -6,6 +9,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//10
 @SP
 AM=M-1
 D=M
@@ -23,6 +28,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//11
 @5000
 D=A
 @SP
@@ -30,6 +37,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//12
 @SP
 AM=M-1
 D=M
@@ -47,6 +56,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//13
 @CALL0
 D=A
 @SP
@@ -82,6 +93,7 @@ A=M
 M=D
 @SP
 M=M+1
+@SP
 D=M
 @0
 D=D-A
@@ -96,6 +108,8 @@ M=D
 @Sys.main
 0;JMP
 (CALL0)
+//
+//14
 @SP
 AM=M-1
 D=M
@@ -113,9 +127,15 @@ D=M
 @R14
 A=M
 M=D
+//
+//15
 (LOOP)
-@LOOP
+//
+//16
+@Sys.init$LOOP
 0;JMP
+//
+//26
 (Sys.main)
 @SP
 A=M
@@ -142,6 +162,8 @@ A=M
 M=0
 @SP
 M=M+1
+//
+//27
 @4001
 D=A
 @SP
@@ -149,6 +171,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//28
 @SP
 AM=M-1
 D=M
@@ -166,6 +190,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//29
 @5001
 D=A
 @SP
@@ -173,6 +199,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//30
 @SP
 AM=M-1
 D=M
@@ -190,6 +218,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//31
 @200
 D=A
 @SP
@@ -197,6 +227,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//32
 @SP
 AM=M-1
 D=M
@@ -214,6 +246,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//33
 @40
 D=A
 @SP
@@ -221,6 +255,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//34
 @SP
 AM=M-1
 D=M
@@ -238,6 +274,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//35
 @6
 D=A
 @SP
@@ -245,6 +283,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//36
 @SP
 AM=M-1
 D=M
@@ -262,6 +302,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//37
 @123
 D=A
 @SP
@@ -269,6 +311,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//38
 @CALL1
 D=A
 @SP
@@ -304,6 +348,7 @@ A=M
 M=D
 @SP
 M=M+1
+@SP
 D=M
 @1
 D=D-A
@@ -318,6 +363,8 @@ M=D
 @Sys.add12
 0;JMP
 (CALL1)
+//
+//39
 @SP
 AM=M-1
 D=M
@@ -335,6 +382,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//40
 @0
 D=A
 @LCL
@@ -345,6 +394,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//41
 @1
 D=A
 @LCL
@@ -355,6 +406,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//42
 @2
 D=A
 @LCL
@@ -365,6 +418,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//43
 @3
 D=A
 @LCL
@@ -375,6 +430,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//44
 @4
 D=A
 @LCL
@@ -385,26 +442,36 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//45
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
+//
+//46
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
+//
+//47
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
+//
+//48
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
+//
+//49
 @LCL
 D=M
 @R13
@@ -454,7 +521,11 @@ M=D
 @R14
 A=M
 0;JMP
+//
+//55
 (Sys.add12)
+//
+//56
 @4002
 D=A
 @SP
@@ -462,6 +533,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//57
 @SP
 AM=M-1
 D=M
@@ -479,6 +552,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//58
 @5002
 D=A
 @SP
@@ -486,6 +561,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//59
 @SP
 AM=M-1
 D=M
@@ -503,6 +580,8 @@ D=M
 @R14
 A=M
 M=D
+//
+//60
 @0
 D=A
 @ARG
@@ -513,6 +592,8 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//61
 @12
 D=A
 @SP
@@ -520,11 +601,15 @@ A=M
 M=D
 @SP
 M=M+1
+//
+//62
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
+//
+//63
 @LCL
 D=M
 @R13
@@ -574,6 +659,7 @@ M=D
 @R14
 A=M
 0;JMP
+//
 (END)
 @END
 0;JMP

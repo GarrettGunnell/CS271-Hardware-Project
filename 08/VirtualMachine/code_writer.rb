@@ -15,9 +15,12 @@ class CodeWriter
     @output_file = File.open(output_file, 'w')
     @current_labels = 0
     @current_calls = 0
+    @current_function = ''
   end
 
   def write_arithmetic(command, current_line)
+    @output_file.puts "//#{current_line}"
+
     if command == 'add'# X + Y
       @output_file.puts "@SP\n"\
       "AM=M-1\n"\
@@ -76,11 +79,13 @@ class CodeWriter
       "A=M-1\n"\
       "M=-M"\
     end
-    #@output_file.puts "//#{current_line}"
+    @output_file.puts "//"
   end
 
   def write_push_pop(command_type, segment, index, current_line)
     segment_arg = @@segments[segment]
+
+    @output_file.puts "//#{current_line}"
 
     if command_type == 'C_Push'
       if segment == 'constant'
@@ -153,27 +158,44 @@ class CodeWriter
         "M=D"\
       end
     end
-    #@output_file.puts "//#{current_line}"
+    @output_file.puts "//"
   end
 
-  def write_label(label_name)
+  def write_label(label_name, current_line)
+    @output_file.puts "//#{current_line}"
+
     @output_file.puts "(#{label_name})"
+
+    @output_file.puts "//"
   end
 
-  def write_goto(label_name)
-    @output_file.puts "@#{label_name}\n"\
+  def write_goto(label_name, current_line)
+    function_label = @current_function + '$' + label_name
+    @output_file.puts "//#{current_line}"
+
+    @output_file.puts "@#{function_label}\n"\
     "0;JMP"
+
+    @output_file.puts "//"
   end
 
-  def write_if(label_name)
+  def write_if(label_name, current_line)
+    function_label = @current_function + '$' + label_name
+
+    @output_file.puts "//#{current_line}"
+
     @output_file.puts "@SP\n"\
     "AM=M-1\n"\
     "D=M\n"\
-    "@#{label_name}\n"\
+    "@#{function_label}\n"\
     "D;JNE\n"
+
+    @output_file.puts "//"
   end
 
-  def write_function(function_name, num_locals)
+  def write_function(function_name, num_locals, current_line)
+    @output_file.puts "//#{current_line}"
+
     @output_file.puts "(#{function_name})"
     for i in 0...num_locals.to_i
       @output_file.puts "@SP\n"\
@@ -182,10 +204,16 @@ class CodeWriter
       "@SP\n"\
       "M=M+1"
     end
+
+    @current_function = function_name
+
+    @output_file.puts "//"
   end
 
-  def write_call(function_name, num_args)
+  def write_call(function_name, num_args, current_line)
     call_label = 'CALL' + @current_calls.to_s
+
+    @output_file.puts "//#{current_line}"
 
     @output_file.puts "@#{call_label}\n"\
     "D=A\n"\
@@ -222,6 +250,7 @@ class CodeWriter
     "M=D\n"\
     "@SP\n"\
     "M=M+1\n"\
+    "@SP\n"\
     "D=M\n"\
     "@#{num_args}\n"\
     "D=D-A\n"\
@@ -237,40 +266,39 @@ class CodeWriter
     "0;JMP\n"\
     "(#{call_label})\n"
 
+    @output_file.puts "//"
+
     @current_calls += 1
   end
 
-  def write_return()
-    @output_file.puts "@LCL\n"\ # store LCL in FRAME
+  def write_return(current_line)
+    @output_file.puts "//#{current_line}"
+
+    @output_file.puts "@LCL\n"\
     "D=M\n"\
     "@R13\n"\
     "M=D\n"\
-    # store *(FRAME - 5) in R14
     "@5\n"\
     "A=D-A\n"\
     "D=M\n"\
     "@R14\n"\
     "M=D\n"\
-    # *ARG = pop()
     "@SP\n"\
     "A=M-1\n"\
     "D=M\n"\
     "@ARG\n"\
     "A=M\n"\
     "M=D\n"\
-    # SP = ARG + 1
     "@ARG\n"\
     "D=M\n"\
     "@SP\n"\
     "M=D+1\n"\
-    # THAT = *(FRAME-1)
     "@R13\n"\
     "D=M\n"\
     "A=D-1\n"\
     "D=M\n"\
     "@THAT\n"\
     "M=D\n"\
-    # THIS = *(FRAME-2)
     "@R13\n"\
     "D=M\n"\
     "@2\n"\
@@ -278,7 +306,6 @@ class CodeWriter
     "D=M\n"\
     "@THIS\n"\
     "M=D\n"\
-    # ARG = *(FRAME-3)
     "@R13\n"\
     "D=M\n"\
     "@3\n"\
@@ -286,7 +313,6 @@ class CodeWriter
     "D=M\n"\
     "@ARG\n"\
     "M=D\n"\
-    # LCL = *(FRAME-4)
     "@R13\n"\
     "D=M\n"\
     "@4\n"\
@@ -294,10 +320,11 @@ class CodeWriter
     "D=M\n"\
     "@LCL\n"\
     "M=D\n"\
-    # goto RET
     "@R14\n"\
     "A=M\n"\
     "0;JMP"
+
+    @output_file.puts "//"
   end
 
   def close() # Puts infinite loop at end of asm file
