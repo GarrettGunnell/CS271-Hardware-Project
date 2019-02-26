@@ -1,9 +1,4 @@
 (Sys.init)
-@SP
-A=M
-M=0
-@SP
-M=M+1
 @4000
 D=A
 @SP
@@ -122,11 +117,6 @@ M=D
 @LOOP
 0;JMP
 (Sys.main)
-@SP
-A=M
-M=0
-@SP
-M=M+1
 @SP
 A=M
 M=0
@@ -465,11 +455,6 @@ M=D
 A=M
 0;JMP
 (Sys.add12)
-@SP
-A=M
-M=0
-@SP
-M=M+1
 @4002
 D=A
 @SP

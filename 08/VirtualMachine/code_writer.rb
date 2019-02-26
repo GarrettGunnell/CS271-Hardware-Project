@@ -175,7 +175,7 @@ class CodeWriter
 
   def write_function(function_name, num_locals)
     @output_file.puts "(#{function_name})"
-    for i in 0..num_locals.to_i
+    for i in 0...num_locals.to_i
       @output_file.puts "@SP\n"\
       "A=M\n"\
       "M=0\n"\
@@ -241,31 +241,36 @@ class CodeWriter
   end
 
   def write_return()
-    @output_file.puts "@LCL\n"\
+    @output_file.puts "@LCL\n"\ # store LCL in FRAME
     "D=M\n"\
     "@R13\n"\
     "M=D\n"\
+    # store *(FRAME - 5) in R14
     "@5\n"\
     "A=D-A\n"\
     "D=M\n"\
     "@R14\n"\
     "M=D\n"\
+    # *ARG = pop()
     "@SP\n"\
     "A=M-1\n"\
     "D=M\n"\
     "@ARG\n"\
     "A=M\n"\
     "M=D\n"\
+    # SP = ARG + 1
     "@ARG\n"\
     "D=M\n"\
     "@SP\n"\
     "M=D+1\n"\
+    # THAT = *(FRAME-1)
     "@R13\n"\
     "D=M\n"\
     "A=D-1\n"\
     "D=M\n"\
     "@THAT\n"\
     "M=D\n"\
+    # THIS = *(FRAME-2)
     "@R13\n"\
     "D=M\n"\
     "@2\n"\
@@ -273,6 +278,7 @@ class CodeWriter
     "D=M\n"\
     "@THIS\n"\
     "M=D\n"\
+    # ARG = *(FRAME-3)
     "@R13\n"\
     "D=M\n"\
     "@3\n"\
@@ -280,6 +286,7 @@ class CodeWriter
     "D=M\n"\
     "@ARG\n"\
     "M=D\n"\
+    # LCL = *(FRAME-4)
     "@R13\n"\
     "D=M\n"\
     "@4\n"\
@@ -287,6 +294,7 @@ class CodeWriter
     "D=M\n"\
     "@LCL\n"\
     "M=D\n"\
+    # goto RET
     "@R14\n"\
     "A=M\n"\
     "0;JMP"
