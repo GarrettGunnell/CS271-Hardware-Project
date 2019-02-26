@@ -173,11 +173,70 @@ class CodeWriter
   end
 
   def write_function(function_name, num_locals)
-    
+    @output_file.puts "(#{function_name})"
+    for i in 0..num_locals.to_i
+      @output_file.puts "@SP\n"\
+      "A=M\n"\
+      "M=0\n"\
+      "@SP\n"\
+      "M=M+1"
+    end
   end
 
   def write_call(function_name, num_args)
 
+  end
+
+  def write_return()
+    @output_file.puts "@LCL\n"\
+    "D=M\n"\
+    "@R13\n"\
+    "M=D\n"\
+    "@5\n"\
+    "A=D-A\n"\
+    "D=M\n"\
+    "@R14\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "A=M-1\n"\
+    "D=M\n"\
+    "@ARG\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@ARG\n"\
+    "D=M\n"\
+    "@SP\n"\
+    "M=D+1\n"\
+    "@R13\n"\
+    "D=M\n"\
+    "A=D-1\n"\
+    "D=M\n"\
+    "@THAT\n"\
+    "M=D\n"\
+    "@R13\n"\
+    "D=M\n"\
+    "@2\n"\
+    "A=D-A\n"\
+    "D=M\n"\
+    "@THIS\n"\
+    "M=D\n"\
+    "@R13\n"\
+    "D=M\n"\
+    "@3\n"\
+    "A=D-A\n"\
+    "D=M\n"\
+    "@ARG\n"\
+    "M=D\n"\
+    "@R13\n"\
+    "D=M\n"\
+    "@4\n"\
+    "A=D-A\n"\
+    "D=M\n"\
+    "@LCL\n"\
+    "M=D\n"\
+    "@R14\n"\
+    "A=M\n"\
+    "0;JMP"
   end
 
   def close() # Puts infinite loop at end of asm file

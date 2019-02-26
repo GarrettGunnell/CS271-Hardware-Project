@@ -21,6 +21,10 @@ class Parser
       'GoTo_Command'
     elsif line == 'if-goto'
       'If_Command'
+    elsif line == 'function'
+      'Function_Command'
+    elsif line == 'return'
+      'Return'
     else
       abort('Invalid syntax')
     end
@@ -63,6 +67,10 @@ class Parser
           @code_writer.write_goto(arg1(command))
         elsif command_type == "If_Command"
           @code_writer.write_if(arg1(command))
+        elsif command_type == "Function_Command"
+          @code_writer.write_function(arg1(command), arg2(command))
+        elsif command_type == "Return"
+          @code_writer.write_return()
         end
       end
     end
