@@ -25,6 +25,8 @@ class Parser
       'Function_Command'
     elsif line == 'return'
       'Return'
+    elsif line == 'call'
+      'Call_Command'
     else
       abort('Invalid syntax')
     end
@@ -71,6 +73,8 @@ class Parser
           @code_writer.write_function(arg1(command), arg2(command))
         elsif command_type == "Return"
           @code_writer.write_return()
+        elsif command_type == "Call_Command"
+          @code_writer.write_call(arg1(command), arg2(command))
         end
       end
     end

@@ -14,6 +14,7 @@ class CodeWriter
   def initialize(output_file)
     @output_file = File.open(output_file, 'w')
     @current_labels = 0
+    @current_calls = 0
   end
 
   def write_arithmetic(command, current_line)
@@ -75,7 +76,7 @@ class CodeWriter
       "A=M-1\n"\
       "M=-M"\
     end
-    @output_file.puts "//#{current_line}"
+    #@output_file.puts "//#{current_line}"
   end
 
   def write_push_pop(command_type, segment, index, current_line)
@@ -152,7 +153,7 @@ class CodeWriter
         "M=D"\
       end
     end
-    @output_file.puts "//#{current_line}"
+    #@output_file.puts "//#{current_line}"
   end
 
   def write_label(label_name)
@@ -184,7 +185,59 @@ class CodeWriter
   end
 
   def write_call(function_name, num_args)
+    call_label = 'CALL' + @current_calls.to_s
 
+    @output_file.puts "@#{call_label}\n"\
+    "D=A\n"\
+    "@SP\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "M=M+1\n"\
+    "@LCL\n"\
+    "D=M\n"\
+    "@SP\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "M=M+1\n"\
+    "@ARG\n"\
+    "D=M\n"\
+    "@SP\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "M=M+1\n"\
+    "@THIS\n"\
+    "D=M\n"\
+    "@SP\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "M=M+1\n"\
+    "@THAT\n"\
+    "D=M\n"\
+    "@SP\n"\
+    "A=M\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "M=M+1\n"\
+    "D=M\n"\
+    "@#{num_args}\n"\
+    "D=D-A\n"\
+    "@5\n"\
+    "D=D-A\n"\
+    "@ARG\n"\
+    "M=D\n"\
+    "@SP\n"\
+    "D=M\n"\
+    "@LCL\n"\
+    "M=D\n"\
+    "@#{function_name}\n"\
+    "0;JMP\n"\
+    "(#{call_label})\n"
+
+    @current_calls += 1
   end
 
   def write_return()
