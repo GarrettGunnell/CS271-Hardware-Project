@@ -329,6 +329,15 @@ class CodeWriter
     @output_file.puts "//"
   end
 
+  def write_bootstrap()
+    @output_file.puts "@256\n"\
+    "D=A\n"\
+    "@SP\n"\
+    "M=D"
+
+    write_call('Sys.init', 0, 0)
+  end
+
   def close() # Puts infinite loop at end of asm file
     @output_file.puts "(END)\n"\
     "@END\n"\
