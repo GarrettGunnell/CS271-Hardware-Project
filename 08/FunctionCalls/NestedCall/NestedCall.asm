@@ -1,7 +1,7 @@
-//8
+//8 write function
 (Sys.init)
 //
-//9
+//9 C_Push
 @4000
 D=A
 @SP
@@ -10,7 +10,7 @@ M=D
 @SP
 M=M+1
 //
-//10
+//10 C_Pop
 @SP
 AM=M-1
 D=M
@@ -29,7 +29,7 @@ D=M
 A=M
 M=D
 //
-//11
+//11 C_Push
 @5000
 D=A
 @SP
@@ -38,7 +38,7 @@ M=D
 @SP
 M=M+1
 //
-//12
+//12 C_Pop
 @SP
 AM=M-1
 D=M
@@ -57,7 +57,7 @@ D=M
 A=M
 M=D
 //
-//13
+//13 write call
 @CALL0
 D=A
 @SP
@@ -109,7 +109,7 @@ M=D
 0;JMP
 (CALL0)
 //
-//14
+//14 C_Pop
 @SP
 AM=M-1
 D=M
@@ -118,7 +118,7 @@ M=D
 @1
 D=A
 @R5
-A=M+D
+A=A+D
 D=A
 @R14
 M=D
@@ -128,14 +128,14 @@ D=M
 A=M
 M=D
 //
-//15
-(LOOP)
+//15 label
+(Sys.init$LOOP)
 //
-//16
+//16 goto
 @Sys.init$LOOP
 0;JMP
 //
-//26
+//26 write function
 (Sys.main)
 @SP
 A=M
@@ -163,7 +163,7 @@ M=0
 @SP
 M=M+1
 //
-//27
+//27 C_Push
 @4001
 D=A
 @SP
@@ -172,7 +172,7 @@ M=D
 @SP
 M=M+1
 //
-//28
+//28 C_Pop
 @SP
 AM=M-1
 D=M
@@ -191,7 +191,7 @@ D=M
 A=M
 M=D
 //
-//29
+//29 C_Push
 @5001
 D=A
 @SP
@@ -200,7 +200,7 @@ M=D
 @SP
 M=M+1
 //
-//30
+//30 C_Pop
 @SP
 AM=M-1
 D=M
@@ -219,7 +219,7 @@ D=M
 A=M
 M=D
 //
-//31
+//31 C_Push
 @200
 D=A
 @SP
@@ -228,7 +228,7 @@ M=D
 @SP
 M=M+1
 //
-//32
+//32 C_Pop
 @SP
 AM=M-1
 D=M
@@ -247,7 +247,7 @@ D=M
 A=M
 M=D
 //
-//33
+//33 C_Push
 @40
 D=A
 @SP
@@ -256,7 +256,7 @@ M=D
 @SP
 M=M+1
 //
-//34
+//34 C_Pop
 @SP
 AM=M-1
 D=M
@@ -275,7 +275,7 @@ D=M
 A=M
 M=D
 //
-//35
+//35 C_Push
 @6
 D=A
 @SP
@@ -284,7 +284,7 @@ M=D
 @SP
 M=M+1
 //
-//36
+//36 C_Pop
 @SP
 AM=M-1
 D=M
@@ -303,7 +303,7 @@ D=M
 A=M
 M=D
 //
-//37
+//37 C_Push
 @123
 D=A
 @SP
@@ -312,7 +312,7 @@ M=D
 @SP
 M=M+1
 //
-//38
+//38 write call
 @CALL1
 D=A
 @SP
@@ -364,7 +364,7 @@ M=D
 0;JMP
 (CALL1)
 //
-//39
+//39 C_Pop
 @SP
 AM=M-1
 D=M
@@ -373,7 +373,7 @@ M=D
 @0
 D=A
 @R5
-A=M+D
+A=A+D
 D=A
 @R14
 M=D
@@ -383,7 +383,7 @@ D=M
 A=M
 M=D
 //
-//40
+//40 C_Push
 @0
 D=A
 @LCL
@@ -395,7 +395,7 @@ M=D
 @SP
 M=M+1
 //
-//41
+//41 C_Push
 @1
 D=A
 @LCL
@@ -407,7 +407,7 @@ M=D
 @SP
 M=M+1
 //
-//42
+//42 C_Push
 @2
 D=A
 @LCL
@@ -419,7 +419,7 @@ M=D
 @SP
 M=M+1
 //
-//43
+//43 C_Push
 @3
 D=A
 @LCL
@@ -431,7 +431,7 @@ M=D
 @SP
 M=M+1
 //
-//44
+//44 C_Push
 @4
 D=A
 @LCL
@@ -443,35 +443,35 @@ M=D
 @SP
 M=M+1
 //
-//45
+//45 add
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
 //
-//46
+//46 add
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
 //
-//47
+//47 add
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
 //
-//48
+//48 add
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
 //
-//49
+//49 write return
 @LCL
 D=M
 @R13
@@ -522,10 +522,10 @@ M=D
 A=M
 0;JMP
 //
-//55
+//55 write function
 (Sys.add12)
 //
-//56
+//56 C_Push
 @4002
 D=A
 @SP
@@ -534,7 +534,7 @@ M=D
 @SP
 M=M+1
 //
-//57
+//57 C_Pop
 @SP
 AM=M-1
 D=M
@@ -553,7 +553,7 @@ D=M
 A=M
 M=D
 //
-//58
+//58 C_Push
 @5002
 D=A
 @SP
@@ -562,7 +562,7 @@ M=D
 @SP
 M=M+1
 //
-//59
+//59 C_Pop
 @SP
 AM=M-1
 D=M
@@ -581,7 +581,7 @@ D=M
 A=M
 M=D
 //
-//60
+//60 C_Push
 @0
 D=A
 @ARG
@@ -593,7 +593,7 @@ M=D
 @SP
 M=M+1
 //
-//61
+//61 C_Push
 @12
 D=A
 @SP
@@ -602,14 +602,14 @@ M=D
 @SP
 M=M+1
 //
-//62
+//62 add
 @SP
 AM=M-1
 D=M
 A=A-1
 M=M+D
 //
-//63
+//63 write return
 @LCL
 D=M
 @R13

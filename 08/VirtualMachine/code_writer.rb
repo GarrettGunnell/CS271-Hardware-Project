@@ -19,7 +19,7 @@ class CodeWriter
   end
 
   def write_arithmetic(command, current_line)
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' ' + command
 
     if command == 'add'# X + Y
       @output_file.puts "@SP\n"\
@@ -85,7 +85,7 @@ class CodeWriter
   def write_push_pop(command_type, segment, index, current_line)
     segment_arg = @@segments[segment]
 
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' ' + command_type
 
     if command_type == 'C_Push'
       if segment == 'constant'
@@ -96,7 +96,7 @@ class CodeWriter
         "M=D\n"\
         "@SP\n"\
         "M=M+1"\
-      elsif segment == 'pointer' || segment == 'static'
+      elsif segment == 'pointer' || segment == 'static' || segment == 'temp'
         @output_file.puts "@#{index}\n"\
         "D=A\n"\
         "@#{segment_arg}\n"\
@@ -120,7 +120,7 @@ class CodeWriter
         "M=M+1"\
       end
     elsif command_type == 'C_Pop'
-      if segment == 'pointer' || segment == 'static'
+      if segment == 'pointer' || segment == 'static' || segment == 'temp'
         @output_file.puts "@SP\n"\
         "AM=M-1\n"\
         "D=M\n"\
@@ -162,16 +162,18 @@ class CodeWriter
   end
 
   def write_label(label_name, current_line)
-    @output_file.puts "//#{current_line}"
+    function_label = @current_function + '$' + label_name
 
-    @output_file.puts "(#{label_name})"
+    @output_file.puts "//#{current_line}" + ' label'
+
+    @output_file.puts "(#{function_label})"
 
     @output_file.puts "//"
   end
 
   def write_goto(label_name, current_line)
     function_label = @current_function + '$' + label_name
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' goto'
 
     @output_file.puts "@#{function_label}\n"\
     "0;JMP"
@@ -182,7 +184,7 @@ class CodeWriter
   def write_if(label_name, current_line)
     function_label = @current_function + '$' + label_name
 
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' if goto'
 
     @output_file.puts "@SP\n"\
     "AM=M-1\n"\
@@ -194,7 +196,7 @@ class CodeWriter
   end
 
   def write_function(function_name, num_locals, current_line)
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' write function'
 
     @output_file.puts "(#{function_name})"
     for i in 0...num_locals.to_i
@@ -213,7 +215,7 @@ class CodeWriter
   def write_call(function_name, num_args, current_line)
     call_label = 'CALL' + @current_calls.to_s
 
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' write call'
 
     @output_file.puts "@#{call_label}\n"\
     "D=A\n"\
@@ -272,7 +274,7 @@ class CodeWriter
   end
 
   def write_return(current_line)
-    @output_file.puts "//#{current_line}"
+    @output_file.puts "//#{current_line}" + ' write return'
 
     @output_file.puts "@LCL\n"\
     "D=M\n"\
