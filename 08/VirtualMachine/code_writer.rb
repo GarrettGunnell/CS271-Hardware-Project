@@ -4,18 +4,20 @@ class CodeWriter
                 'this' => 'THIS',
                 'that' => 'THAT',
                 'temp' => 'R5',
-                'static' => '16',
                 'pointer' => '3'}
 
   @@equalities = {'eq' => 'D;JEQ',
                   'gt' => 'D;JGT',
                   'lt' => 'D;JLT'}
 
+  @@statics = Hash.new
+
   def initialize(output_file)
     @output_file = File.open(output_file, 'w')
     @current_labels = 0
     @current_calls = 0
     @current_function = ''
+    @current_static = 16
   end
 
   def write_arithmetic(command, current_line)
@@ -96,7 +98,27 @@ class CodeWriter
         "M=D\n"\
         "@SP\n"\
         "M=M+1"\
-      elsif segment == 'pointer' || segment == 'static' || segment == 'temp'
+      elsif segment == 'static'
+        if @@statics.has_key?(@current_function.split('.')[0])
+          static = @@statics[@current_function.split('.')[0]]
+        else
+          @@statics[@current_function.split('.')[0]] = @current_static
+          static = @@statics[@current_function.split('.')[0]]
+          @current_static += 2
+        end
+        @output_file.puts "@#{index}\n"\
+        "D=A\n"\
+        "@#{static}\n"\
+        "A=A+D\n"\
+        "D=M\n"\
+        "@SP\n"\
+        "A=M\n"\
+        "M=D\n"\
+        "@SP\n"\
+        "M=M+1"\
+
+        puts @current_function.split('.')[0]
+      elsif segment == 'pointer' || segment == 'temp'
         @output_file.puts "@#{index}\n"\
         "D=A\n"\
         "@#{segment_arg}\n"\
@@ -120,7 +142,7 @@ class CodeWriter
         "M=M+1"\
       end
     elsif command_type == 'C_Pop'
-      if segment == 'pointer' || segment == 'static' || segment == 'temp'
+      if segment == 'pointer' || segment == 'temp'
         @output_file.puts "@SP\n"\
         "AM=M-1\n"\
         "D=M\n"\
@@ -138,6 +160,33 @@ class CodeWriter
         "@R14\n"\
         "A=M\n"\
         "M=D"\
+      elsif segment == 'static'
+        if @@statics.has_key?(@current_function.split('.')[0])
+          static = @@statics[@current_function.split('.')[0]]
+        else
+          @@statics[@current_function.split('.')[0]] = @current_static
+          static = @@statics[@current_function.split('.')[0]]
+          @current_static += 2
+        end
+        
+        @output_file.puts "@SP\n"\
+        "AM=M-1\n"\
+        "D=M\n"\
+        "@R13\n"\
+        "M=D\n"\
+        "@#{index}\n"\
+        "D=A\n"\
+        "@#{static}\n"\
+        "A=A+D\n"\
+        "D=A\n"\
+        "@R14\n"\
+        "M=D\n"\
+        "@R13\n"\
+        "D=M\n"\
+        "@R14\n"\
+        "A=M\n"\
+        "M=D"\
+
       else
         @output_file.puts "@SP\n"\
         "AM=M-1\n"\

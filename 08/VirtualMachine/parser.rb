@@ -46,8 +46,8 @@ class Parser
   end
 
   def parse()
+    @code_writer.write_bootstrap()
     @input_files.each do |file|
-      @code_writer.write_bootstrap()
       File.open(file, 'r').each do |line|
         skip_line = false
         new_line = ''
